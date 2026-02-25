@@ -9,6 +9,7 @@ import AdminLayout from "@/components/AdminLayout";
 import Index from "./pages/Index";
 import Rooms from "./pages/Rooms";
 import Booking from "./pages/Booking";
+import BookingConfirmation from "./pages/BookingConfirmation";
 import Contact from "./pages/Contact";
 import AdminLogin from "./pages/AdminLogin";
 import Dashboard from "./pages/admin/Dashboard";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/rooms" element={<Rooms />} />
             <Route path="/booking" element={<Booking />} />
+            <Route path="/booking/confirmation" element={<BookingConfirmation />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route

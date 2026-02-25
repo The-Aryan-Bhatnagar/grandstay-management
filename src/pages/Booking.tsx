@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import PublicNavbar from "@/components/PublicNavbar";
 import PublicFooter from "@/components/PublicFooter";
 import { supabase } from "@/integrations/supabase/client";
@@ -22,6 +22,7 @@ interface Room {
 
 const Booking = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState(searchParams.get("room") ?? "");
   const [name, setName] = useState("");
@@ -62,6 +63,8 @@ const Booking = () => {
       return;
     }
 
+    const bookingRef = `GH-${Date.now().toString(36).toUpperCase()}`;
+
     const { error: bookErr } = await supabase.from("bookings").insert({
       customer_id: customerId,
       room_id: selectedRoom,
@@ -74,8 +77,18 @@ const Booking = () => {
     if (bookErr) {
       toast({ title: "Booking failed", description: bookErr.message, variant: "destructive" });
     } else {
-      toast({ title: "Booking Confirmed!", description: `Total: $${total} for ${nights} nights` });
-      setName(""); setEmail(""); setPhone(""); setCheckIn(undefined); setCheckOut(undefined); setGuests("1"); setSelectedRoom("");
+      const roomName = rooms.find((r) => r.id === selectedRoom)?.name || "";
+      const params = new URLSearchParams({
+        ref: bookingRef,
+        room: roomName,
+        checkIn: format(checkIn, "PPP"),
+        checkOut: format(checkOut, "PPP"),
+        guests,
+        nights: String(nights),
+        total: String(total),
+        name,
+      });
+      navigate(`/booking/confirmation?${params.toString()}`);
     }
     setSubmitting(false);
   };
