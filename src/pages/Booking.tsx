@@ -50,21 +50,20 @@ const Booking = () => {
     }
     setSubmitting(true);
 
-    // Create customer
-    const { data: customer, error: custErr } = await supabase
+    // Create customer without SELECT (public booking flow has no customer read access)
+    const customerId = crypto.randomUUID();
+    const { error: custErr } = await supabase
       .from("customers")
-      .insert({ name, email, phone })
-      .select("id")
-      .single();
+      .insert({ id: customerId, name, email, phone });
 
-    if (custErr || !customer) {
-      toast({ title: "Error creating booking", description: custErr?.message, variant: "destructive" });
+    if (custErr) {
+      toast({ title: "Error creating booking", description: custErr.message, variant: "destructive" });
       setSubmitting(false);
       return;
     }
 
     const { error: bookErr } = await supabase.from("bookings").insert({
-      customer_id: customer.id,
+      customer_id: customerId,
       room_id: selectedRoom,
       check_in: format(checkIn, "yyyy-MM-dd"),
       check_out: format(checkOut, "yyyy-MM-dd"),
