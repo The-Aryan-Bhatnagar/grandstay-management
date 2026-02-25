@@ -29,7 +29,7 @@ const RoomsManagement = () => {
   const [open, setOpen] = useState(false);
 
   const load = async () => {
-    const { data } = await supabase.from("rooms").select("*").order("created_at", { ascending: false });
+    const { data } = await supabase.from("rooms").select("*").order("name");
     setRooms((data as Room[]) || []);
   };
 
@@ -83,7 +83,7 @@ const RoomsManagement = () => {
                 <div><Label className="font-body text-sm">Status</Label>
                   <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
                     <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
-                    <SelectContent>{["Available","Booked","Maintenance"].map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+                    <SelectContent>{["Available","Occupied","Cleaning","Maintenance"].map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
                   </Select>
                 </div>
               </div>
@@ -118,7 +118,10 @@ const RoomsManagement = () => {
                 <td className="px-4 py-3">
                   <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                     room.status === "Available" ? "bg-green-500/10 text-green-500" :
-                    room.status === "Booked" ? "bg-gold/10 text-gold" : "bg-destructive/10 text-destructive"
+                    room.status === "Occupied" ? "bg-red-500/10 text-red-500" :
+                    room.status === "Cleaning" ? "bg-yellow-500/10 text-yellow-600" :
+                    room.status === "Maintenance" ? "bg-orange-500/10 text-orange-500" :
+                    "bg-gold/10 text-gold"
                   }`}>{room.status}</span>
                 </td>
                 <td className="px-4 py-3">
