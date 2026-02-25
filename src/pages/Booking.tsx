@@ -23,7 +23,7 @@ interface Room {
 const Booking = () => {
   const [searchParams] = useSearchParams();
   const [rooms, setRooms] = useState<Room[]>([]);
-  const [selectedRoom, setSelectedRoom] = useState(searchParams.get("room") || "");
+  const [selectedRoom, setSelectedRoom] = useState(searchParams.get("room") ?? "");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -120,7 +120,7 @@ const Booking = () => {
 
             <div>
               <Label className="font-body text-sm text-foreground">Room *</Label>
-              <Select value={selectedRoom} onValueChange={setSelectedRoom}>
+              <Select value={selectedRoom || undefined} onValueChange={setSelectedRoom}>
                 <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select a room" /></SelectTrigger>
                 <SelectContent>
                   {rooms.map((r) => (
