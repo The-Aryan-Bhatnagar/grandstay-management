@@ -18,6 +18,9 @@ import CustomersManagement from "./pages/admin/CustomersManagement";
 import StaffManagement from "./pages/admin/StaffManagement";
 import Analytics from "./pages/admin/Analytics";
 import AdminSettings from "./pages/admin/Settings";
+import RoomStatusBoard from "./pages/admin/RoomStatusBoard";
+import Billing from "./pages/admin/Billing";
+import MaintenancePage from "./pages/admin/Maintenance";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -44,10 +47,13 @@ const App = () => (
               }
             >
               <Route index element={<Dashboard />} />
+              <Route path="room-status" element={<RoomStatusBoard />} />
               <Route path="rooms" element={<RoomsManagement />} />
               <Route path="bookings" element={<BookingsManagement />} />
+              <Route path="billing" element={<Billing />} />
               <Route path="customers" element={<CustomersManagement />} />
               <Route path="staff" element={<StaffManagement />} />
+              <Route path="maintenance" element={<MaintenancePage />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="settings" element={<AdminSettings />} />
             </Route>
