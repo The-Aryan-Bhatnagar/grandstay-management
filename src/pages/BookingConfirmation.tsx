@@ -83,7 +83,7 @@ const BookingConfirmation = () => {
             <div className="border-t border-border pt-5">
               <div className="flex justify-between items-center font-body text-sm text-muted-foreground mb-2">
                 <span>{nights} night{Number(nights) > 1 ? "s" : ""}</span>
-                <span>${(Number(total) / Math.max(1, Number(nights))).toLocaleString()}/night</span>
+                <span>₹{(Number(total) / Math.max(1, Number(nights))).toLocaleString("en-IN")}/night</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="font-body font-semibold text-foreground text-lg">Total</span>
