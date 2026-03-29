@@ -136,7 +136,7 @@ const Booking = () => {
                 <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select a room" /></SelectTrigger>
                 <SelectContent>
                   {rooms.map((r) => (
-                    <SelectItem key={r.id} value={r.id}>{r.name} — ${r.price}/night</SelectItem>
+                    <SelectItem key={r.id} value={r.id}>{r.name} — ₹{r.price.toLocaleString("en-IN")}/night</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
