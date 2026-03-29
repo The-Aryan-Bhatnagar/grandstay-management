@@ -23,9 +23,9 @@ const amenities = [
 ];
 
 const testimonials = [
-  { name: "Emily R.", text: "An absolutely breathtaking experience. The attention to detail is unmatched.", rating: 5 },
-  { name: "James M.", text: "World-class service and stunning rooms. We'll definitely be back.", rating: 5 },
-  { name: "Sofia L.", text: "The presidential suite exceeded every expectation. Pure luxury.", rating: 5 },
+  { name: "Priya S.", text: "An absolutely breathtaking experience. The attention to detail is unmatched.", rating: 5 },
+  { name: "Rajesh M.", text: "World-class service and stunning rooms. We'll definitely be back.", rating: 5 },
+  { name: "Ananya K.", text: "The Royal Suite exceeded every expectation. Pure luxury.", rating: 5 },
 ];
 
 const Index = () => {
