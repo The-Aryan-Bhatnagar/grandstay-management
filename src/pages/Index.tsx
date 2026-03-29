@@ -79,7 +79,7 @@ const Index = () => {
                 <div className="p-6">
                   <h3 className="font-display text-xl font-semibold text-foreground mb-2">{room.name}</h3>
                   <div className="flex items-baseline gap-1 mb-4">
-                    <span className="text-gold text-2xl font-display font-bold">${room.price}</span>
+                    <span className="text-gold text-2xl font-display font-bold">₹{room.price.toLocaleString("en-IN")}</span>
                     <span className="text-muted-foreground text-sm font-body">/ night</span>
                   </div>
                   <Link

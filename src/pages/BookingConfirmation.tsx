@@ -87,7 +87,7 @@ const BookingConfirmation = () => {
               </div>
               <div className="flex justify-between items-center">
                 <span className="font-body font-semibold text-foreground text-lg">Total</span>
-                <span className="font-display font-bold text-gold text-3xl">${Number(total).toLocaleString()}</span>
+                <span className="font-display font-bold text-gold text-3xl">₹{Number(total).toLocaleString("en-IN")}</span>
               </div>
             </div>
           </div>

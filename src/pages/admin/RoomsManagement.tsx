@@ -113,7 +113,7 @@ const RoomsManagement = () => {
               <tr key={room.id} className="border-t border-border hover:bg-muted/30 transition-colors">
                 <td className="px-4 py-3 font-medium text-foreground">{room.name}</td>
                 <td className="px-4 py-3 text-muted-foreground">{room.type}</td>
-                <td className="px-4 py-3 text-gold font-semibold">${room.price}</td>
+                <td className="px-4 py-3 text-gold font-semibold">₹{room.price.toLocaleString("en-IN")}</td>
                 <td className="px-4 py-3 text-muted-foreground">{room.capacity}</td>
                 <td className="px-4 py-3">
                   <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
