@@ -117,7 +117,7 @@ const Rooms = () => {
                       <span className="flex items-center gap-1"><Users size={14} /> {room.capacity} Guests</span>
                     </div>
                     <div className="flex items-baseline gap-1 mb-4">
-                      <span className="text-gold text-2xl font-display font-bold">${room.price}</span>
+                      <span className="text-gold text-2xl font-display font-bold">₹{room.price.toLocaleString("en-IN")}</span>
                       <span className="text-muted-foreground text-sm font-body">/ night</span>
                     </div>
                     <Link

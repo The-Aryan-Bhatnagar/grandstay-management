@@ -8,9 +8,9 @@ import roomStandard from "@/assets/room-standard.jpg";
 import { Wifi, Waves, UtensilsCrossed, Car, Snowflake, Star, Quote } from "lucide-react";
 
 const featuredRooms = [
-  { name: "Standard Room", price: 150, image: roomStandard, type: "Standard" },
-  { name: "Deluxe Room", price: 280, image: roomDeluxe, type: "Deluxe" },
-  { name: "Presidential Suite", price: 550, image: roomSuite, type: "Suite" },
+  { name: "Classic Room", price: 4500, image: roomStandard, type: "Standard" },
+  { name: "Maharaja Deluxe", price: 8500, image: roomDeluxe, type: "Deluxe" },
+  { name: "Royal Suite", price: 18000, image: roomSuite, type: "Suite" },
 ];
 
 const amenities = [
@@ -23,9 +23,9 @@ const amenities = [
 ];
 
 const testimonials = [
-  { name: "Emily R.", text: "An absolutely breathtaking experience. The attention to detail is unmatched.", rating: 5 },
-  { name: "James M.", text: "World-class service and stunning rooms. We'll definitely be back.", rating: 5 },
-  { name: "Sofia L.", text: "The presidential suite exceeded every expectation. Pure luxury.", rating: 5 },
+  { name: "Priya S.", text: "An absolutely breathtaking experience. The attention to detail is unmatched.", rating: 5 },
+  { name: "Rajesh M.", text: "World-class service and stunning rooms. We'll definitely be back.", rating: 5 },
+  { name: "Ananya K.", text: "The Royal Suite exceeded every expectation. Pure luxury.", rating: 5 },
 ];
 
 const Index = () => {
@@ -79,7 +79,7 @@ const Index = () => {
                 <div className="p-6">
                   <h3 className="font-display text-xl font-semibold text-foreground mb-2">{room.name}</h3>
                   <div className="flex items-baseline gap-1 mb-4">
-                    <span className="text-gold text-2xl font-display font-bold">${room.price}</span>
+                    <span className="text-gold text-2xl font-display font-bold">₹{room.price.toLocaleString("en-IN")}</span>
                     <span className="text-muted-foreground text-sm font-body">/ night</span>
                   </div>
                   <Link

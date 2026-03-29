@@ -136,7 +136,7 @@ const Booking = () => {
                 <SelectTrigger className="mt-1.5"><SelectValue placeholder="Select a room" /></SelectTrigger>
                 <SelectContent>
                   {rooms.map((r) => (
-                    <SelectItem key={r.id} value={r.id}>{r.name} — ${r.price}/night</SelectItem>
+                    <SelectItem key={r.id} value={r.id}>{r.name} — ₹{r.price.toLocaleString("en-IN")}/night</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -176,9 +176,9 @@ const Booking = () => {
             {total > 0 && (
               <div className="border-t border-border pt-4 text-center">
                 <p className="text-sm text-muted-foreground font-body">
-                  {nights} night{nights > 1 ? "s" : ""} × ${selectedPrice}
+                  {nights} night{nights > 1 ? "s" : ""} × ₹{selectedPrice.toLocaleString("en-IN")}
                 </p>
-                <p className="text-3xl font-display font-bold text-gold mt-1">${total}</p>
+                <p className="text-3xl font-display font-bold text-gold mt-1">₹{total.toLocaleString("en-IN")}</p>
               </div>
             )}
 

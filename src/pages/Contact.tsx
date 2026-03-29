@@ -38,9 +38,9 @@ const Contact = () => {
                 <h3 className="font-display text-2xl font-semibold text-foreground mb-6">Hotel Information</h3>
                 <div className="space-y-5">
                   {[
-                    { icon: MapPin, label: "Address", value: "123 Luxury Avenue, Manhattan, NY 10001" },
-                    { icon: Phone, label: "Phone", value: "+1 (555) 123-4567" },
-                    { icon: Mail, label: "Email", value: "info@grandeurhotel.com" },
+                    { icon: MapPin, label: "Address", value: "42, MG Road, Connaught Place, New Delhi 110001" },
+                    { icon: Phone, label: "Phone", value: "+91 11 4567 8900" },
+                    { icon: Mail, label: "Email", value: "info@grandeurhotel.in" },
                     { icon: Clock, label: "Front Desk", value: "24/7" },
                   ].map((item) => (
                     <div key={item.label} className="flex items-start gap-4">
