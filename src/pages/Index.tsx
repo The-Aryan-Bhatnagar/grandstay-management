@@ -8,9 +8,9 @@ import roomStandard from "@/assets/room-standard.jpg";
 import { Wifi, Waves, UtensilsCrossed, Car, Snowflake, Star, Quote } from "lucide-react";
 
 const featuredRooms = [
-  { name: "Standard Room", price: 150, image: roomStandard, type: "Standard" },
-  { name: "Deluxe Room", price: 280, image: roomDeluxe, type: "Deluxe" },
-  { name: "Presidential Suite", price: 550, image: roomSuite, type: "Suite" },
+  { name: "Classic Room", price: 4500, image: roomStandard, type: "Standard" },
+  { name: "Maharaja Deluxe", price: 8500, image: roomDeluxe, type: "Deluxe" },
+  { name: "Royal Suite", price: 18000, image: roomSuite, type: "Suite" },
 ];
 
 const amenities = [
