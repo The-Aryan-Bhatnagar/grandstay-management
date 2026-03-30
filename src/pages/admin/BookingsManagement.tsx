@@ -316,6 +316,9 @@ const BookingsManagement = () => {
                     <Link to={`/admin/billing?booking=${b.id}`} className="text-gold hover:bg-gold/10 p-1 rounded" title="Invoice">
                       <Receipt size={14} />
                     </Link>
+                    <button onClick={() => deleteBooking(b.id, (b as any).room_id)} className="text-destructive hover:bg-destructive/10 p-1 rounded" title="Delete">
+                      <Trash2 size={14} />
+                    </button>
                   </div>
                 </td>
               </tr>
