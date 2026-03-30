@@ -65,6 +65,18 @@ const Billing = () => {
     window.print();
   };
 
+  const handleDownload = async () => {
+    const el = document.getElementById("invoice");
+    if (!el) return;
+    const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, pdfHeight);
+    pdf.save(`invoice-${invoice?.id.slice(0, 8).toUpperCase()}.pdf`);
+  };
+
   const markPaid = async () => {
     if (!invoice) return;
     await supabase.from("bookings").update({ payment_status: "Paid", total_price: grandTotal }).eq("id", invoice.id);
