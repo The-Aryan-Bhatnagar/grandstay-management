@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Receipt, Printer } from "lucide-react";
+import { Receipt, Printer, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format, differenceInDays } from "date-fns";
 
-const TAX_RATE = 0.10; // 10% tax
+const TAX_RATE = 0.18; // 18% GST
 
 interface BookingDetail {
   id: string;
+  room_id: string;
   check_in: string;
   check_out: string;
   guests: number;
@@ -28,21 +29,21 @@ const Billing = () => {
   const [selected, setSelected] = useState<string>(searchParams.get("booking") || "");
   const [invoice, setInvoice] = useState<BookingDetail | null>(null);
 
-  useEffect(() => {
-    const load = async () => {
-      const { data } = await supabase
-        .from("bookings")
-        .select("*, customers(name, email, phone), rooms(name, type, price)")
-        .order("created_at", { ascending: false });
-      setBookings((data as any[]) || []);
+  const load = async () => {
+    const { data } = await supabase
+      .from("bookings")
+      .select("*, customers(name, email, phone), rooms(name, type, price)")
+      .order("created_at", { ascending: false });
+    const list = (data as any[]) || [];
+    setBookings(list);
 
-      if (selected) {
-        const found = (data as any[])?.find((b: any) => b.id === selected);
-        if (found) setInvoice(found);
-      }
-    };
-    load();
-  }, [selected]);
+    if (selected) {
+      const found = list.find((b: any) => b.id === selected);
+      if (found) setInvoice(found);
+    }
+  };
+
+  useEffect(() => { load(); }, [selected]);
 
   const handleSelect = (id: string) => {
     setSelected(id);
@@ -66,7 +67,22 @@ const Billing = () => {
     if (!invoice) return;
     await supabase.from("bookings").update({ payment_status: "Paid", total_price: grandTotal }).eq("id", invoice.id);
     toast({ title: "Invoice marked as paid" });
-    setSelected(invoice.id); // refresh
+    setSelected(invoice.id);
+  };
+
+  const deleteBooking = async () => {
+    if (!invoice) return;
+    if (!confirm("Are you sure you want to delete this booking?")) return;
+    const { error } = await supabase.from("bookings").delete().eq("id", invoice.id);
+    if (error) {
+      toast({ title: "Delete failed", description: error.message, variant: "destructive" });
+    } else {
+      await supabase.from("rooms").update({ status: "Available" }).eq("id", invoice.room_id);
+      toast({ title: "Booking deleted" });
+      setInvoice(null);
+      setSelected("");
+      load();
+    }
   };
 
   return (
@@ -102,8 +118,9 @@ const Billing = () => {
               <h2 className="font-display text-2xl font-bold text-foreground">
                 <span className="gold-text">GRANDEUR</span> HOTEL
               </h2>
-              <p className="text-xs text-muted-foreground font-body mt-1">123 Luxury Avenue, Manhattan, NY 10001</p>
-              <p className="text-xs text-muted-foreground font-body">+1 (555) 123-4567 | info@grandeurhotel.com</p>
+              <p className="text-xs text-muted-foreground font-body mt-1">42, MG Road, Connaught Place, New Delhi — 110001</p>
+              <p className="text-xs text-muted-foreground font-body">+91 11 4567 8900 | info@grandeurhotel.in</p>
+              <p className="text-xs text-muted-foreground font-body">GSTIN: 07AAACG1234A1Z5</p>
             </div>
             <div className="text-right">
               <p className="font-display text-lg font-bold text-foreground">INVOICE</p>
@@ -143,8 +160,8 @@ const Billing = () => {
               <tr className="border-b border-border">
                 <td className="py-3 text-foreground">{invoice.rooms?.name} — {invoice.rooms?.type}</td>
                 <td className="py-3 text-right text-muted-foreground">{nights} night{nights > 1 ? "s" : ""}</td>
-                <td className="py-3 text-right text-muted-foreground">₹{roomPrice.toLocaleString()}</td>
-                <td className="py-3 text-right text-foreground font-medium">₹{subtotal.toLocaleString()}</td>
+                <td className="py-3 text-right text-muted-foreground">₹{roomPrice.toLocaleString("en-IN")}</td>
+                <td className="py-3 text-right text-foreground font-medium">₹{subtotal.toLocaleString("en-IN")}</td>
               </tr>
             </tbody>
           </table>
@@ -154,15 +171,15 @@ const Billing = () => {
             <div className="w-64 space-y-2">
               <div className="flex justify-between text-sm font-body">
                 <span className="text-muted-foreground">Subtotal</span>
-                <span className="text-foreground">₹{subtotal.toLocaleString()}</span>
+                <span className="text-foreground">₹{subtotal.toLocaleString("en-IN")}</span>
               </div>
               <div className="flex justify-between text-sm font-body">
-                <span className="text-muted-foreground">Tax ({(TAX_RATE * 100).toFixed(0)}%)</span>
-                <span className="text-foreground">₹{tax.toLocaleString()}</span>
+                <span className="text-muted-foreground">GST ({(TAX_RATE * 100).toFixed(0)}%)</span>
+                <span className="text-foreground">₹{tax.toLocaleString("en-IN")}</span>
               </div>
               <div className="flex justify-between text-lg font-display font-bold border-t border-border pt-2">
                 <span className="text-foreground">Total</span>
-                <span className="text-gold">₹{grandTotal.toLocaleString()}</span>
+                <span className="text-gold">₹{grandTotal.toLocaleString("en-IN")}</span>
               </div>
             </div>
           </div>
@@ -185,6 +202,9 @@ const Billing = () => {
               )}
               <Button onClick={handlePrint} variant="outline" size="sm" className="font-body text-xs">
                 <Printer size={14} className="mr-1" /> Print
+              </Button>
+              <Button onClick={deleteBooking} variant="destructive" size="sm" className="font-body text-xs">
+                <Trash2 size={14} className="mr-1" /> Delete
               </Button>
             </div>
           </div>
