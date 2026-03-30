@@ -214,6 +214,9 @@ const Billing = () => {
                   Mark as Paid
                 </Button>
               )}
+              <Button onClick={handleDownload} variant="outline" size="sm" className="font-body text-xs">
+                <Download size={14} className="mr-1" /> Download
+              </Button>
               <Button onClick={handlePrint} variant="outline" size="sm" className="font-body text-xs">
                 <Printer size={14} className="mr-1" /> Print
               </Button>
