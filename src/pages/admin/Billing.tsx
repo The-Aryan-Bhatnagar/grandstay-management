@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
-import { Receipt, Printer, Trash2 } from "lucide-react";
+import { Receipt, Printer, Trash2, Download } from "lucide-react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { format, differenceInDays } from "date-fns";
@@ -61,6 +63,18 @@ const Billing = () => {
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleDownload = async () => {
+    const el = document.getElementById("invoice");
+    if (!el) return;
+    const canvas = await html2canvas(el, { scale: 2, useCORS: true });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 0, 10, pdfWidth, pdfHeight);
+    pdf.save(`invoice-${invoice?.id.slice(0, 8).toUpperCase()}.pdf`);
   };
 
   const markPaid = async () => {
@@ -200,6 +214,9 @@ const Billing = () => {
                   Mark as Paid
                 </Button>
               )}
+              <Button onClick={handleDownload} variant="outline" size="sm" className="font-body text-xs">
+                <Download size={14} className="mr-1" /> Download
+              </Button>
               <Button onClick={handlePrint} variant="outline" size="sm" className="font-body text-xs">
                 <Printer size={14} className="mr-1" /> Print
               </Button>
