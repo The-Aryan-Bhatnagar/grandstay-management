@@ -116,7 +116,6 @@ const BookingsManagement = () => {
   const updateStatus = async (id: string, status: string, roomId?: string) => {
     await supabase.from("bookings").update({ status }).eq("id", id);
 
-    // Update room status based on booking status
     if (roomId) {
       if (status === "Checked In") {
         await supabase.from("rooms").update({ status: "Occupied" }).eq("id", roomId);
@@ -129,6 +128,20 @@ const BookingsManagement = () => {
 
     toast({ title: `Booking ${status.toLowerCase()}` });
     load(); loadRooms();
+  };
+
+  const deleteBooking = async (id: string, roomId?: string) => {
+    if (!confirm("Are you sure you want to delete this booking?")) return;
+    const { error } = await supabase.from("bookings").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Delete failed", description: error.message, variant: "destructive" });
+    } else {
+      if (roomId) {
+        await supabase.from("rooms").update({ status: "Available" }).eq("id", roomId);
+      }
+      toast({ title: "Booking deleted" });
+      load(); loadRooms();
+    }
   };
 
   const updatePayment = async (id: string, payment_status: string) => {
