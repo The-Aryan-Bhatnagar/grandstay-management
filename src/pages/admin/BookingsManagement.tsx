@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Plus, LogIn, LogOut, X, Receipt } from "lucide-react";
+import { Plus, LogIn, LogOut, X, Receipt, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 
 interface Booking {
   id: string;
+  room_id: string;
   check_in: string;
   check_out: string;
   guests: number;
@@ -116,7 +117,6 @@ const BookingsManagement = () => {
   const updateStatus = async (id: string, status: string, roomId?: string) => {
     await supabase.from("bookings").update({ status }).eq("id", id);
 
-    // Update room status based on booking status
     if (roomId) {
       if (status === "Checked In") {
         await supabase.from("rooms").update({ status: "Occupied" }).eq("id", roomId);
@@ -129,6 +129,20 @@ const BookingsManagement = () => {
 
     toast({ title: `Booking ${status.toLowerCase()}` });
     load(); loadRooms();
+  };
+
+  const deleteBooking = async (id: string, roomId?: string) => {
+    if (!confirm("Are you sure you want to delete this booking?")) return;
+    const { error } = await supabase.from("bookings").delete().eq("id", id);
+    if (error) {
+      toast({ title: "Delete failed", description: error.message, variant: "destructive" });
+    } else {
+      if (roomId) {
+        await supabase.from("rooms").update({ status: "Available" }).eq("id", roomId);
+      }
+      toast({ title: "Booking deleted" });
+      load(); loadRooms();
+    }
   };
 
   const updatePayment = async (id: string, payment_status: string) => {
@@ -303,6 +317,9 @@ const BookingsManagement = () => {
                     <Link to={`/admin/billing?booking=${b.id}`} className="text-gold hover:bg-gold/10 p-1 rounded" title="Invoice">
                       <Receipt size={14} />
                     </Link>
+                    <button onClick={() => deleteBooking(b.id, b.room_id)} className="text-destructive hover:bg-destructive/10 p-1 rounded" title="Delete">
+                      <Trash2 size={14} />
+                    </button>
                   </div>
                 </td>
               </tr>
