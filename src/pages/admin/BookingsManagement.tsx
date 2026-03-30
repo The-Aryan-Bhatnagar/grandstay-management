@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 
 interface Booking {
   id: string;
+  room_id: string;
   check_in: string;
   check_out: string;
   guests: number;
